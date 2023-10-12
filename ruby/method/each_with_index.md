@@ -1,7 +1,7 @@
 ### each_with_index
 eachループで回してそれぞれの番号にインデックスを当てられる
 ```
-[array].each_with_index do |item, i|
+array.each_with_index do |item, i|
   "#{i}番目のデータは、#{item}です"
 end
 ```
