@@ -1,0 +1,1 @@
+チャットのリレーション[参考](https://qiita.com/gobtktk/items/4c9269ca2e0af3f0138a)
