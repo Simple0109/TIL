@@ -15,3 +15,28 @@
 ・updated:コンポーネントが再描写された直後に呼び出される
 ・beforeUnmount:コンポーネントがDOMから除去される直前に呼び出される
 ・unmounted:コンポーネントがDOMから除去された直後に呼び出される
+
+### ライフサイクルフックの使い方
+**setupを使わない場合**
+```javascript
+//ライフサイクルフックの名前(){ライフサイクルフックで実行したい処理}
+created(){
+  console.log("created フック: コンポーネントが初期化された直後");
+},
+```
+**setupを使う場合**
+```javascript
+//beforeCreate,createdは<script>直下にそのまま書く
+console.log("beforeCreate フック: コンポーネントが初期化される直前");
+console.log("created フック: コンポーネントが初期化された直後");
+//beforeMount以降はそれぞれのフック名に「on」をつけたメソッドを使用し、その中に処理を描く
+onBeforeMount(()=> {
+  console.log("beforeMount フック: DOMにマウントされる直前");
+});
+```
+
+※これらのメソッドは`import`する必要があるので気をつけること
+```javascript
+<script setup>
+import { ref, onBeforeMount, onMounted, onBeforeUpdate, onUpdated } from "vue";
+```

@@ -24,6 +24,23 @@ key属性はリストの要素を一意に識別できる->Vueがデータを正
 条件が`true`の場合、その要素は表示される
 **v-else**
 v-ifのある直後の要素で`v-else`を使うとその条件に当てはまらない場合にv-elseの要素が表示される
+```javascript
+<script setup>
+import { ref } from 'vue'
+
+const awesome = ref(true)
+
+function toggle() {
+  awesome.value = !awesome.value
+}
+</script>
+
+<template>
+  <button @click="toggle">toggle</button>
+  <h1 v-if="awesome">Vue is awesome!</h1>
+  <h1 v-else>Oh no 😢</h1>
+</template>
+```
 
 ### v-show
 書き方と振る舞いはv-ifと同じ（※v-elseに相当するものはない）
