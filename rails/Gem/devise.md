@@ -81,3 +81,7 @@ onlyで特定のアクションのみに設定したり、exceptで特定のア�
 
 **`user_session`**
 ユーザーのセッション情報を設定・取得するためのメソッド
+
+### 詳細設定
+**パスワード文字列数の変更**
+config/initializers/devise.rbファイルを開き`config.password_length = 6..128`の数値部分を変更する
