@@ -90,3 +90,43 @@ axios.get('http://example.com/api/data')
     console.error(error);
   });
 ```
+
+### SFCとはなにか
+**SFC**とは**単一ファイルコンポーネント(Single File Component)**の略称
+Vue独自のフォーマットでコンポーネントを定義する方法の1つ
+```javascript
+<template>
+  <div class="title">{{ msg }}</div>
+</template>
+
+<script>
+  export default {
+    data(){
+      return {
+        msg: "Hello world!"
+      },
+    },
+  };
+</script>
+
+<style>
+  .title{
+    color: blue;
+  }
+</style>
+
+```
+上記のコードのようにSFCでは`<template>`,`script>`,`<style>`の3つのブロックからコンポーネントが構成されているのが大きな特徴
+
+それぞれのブロックについて解説
+`<template>ブロック`
+HTMLで記述する表示要素
+
+`<script>ブロック`
+JavaScriptで記述するロジック要素
+scriptタブにsetup属性を指定することで**CompositionAPI**を使うことができる
+**CompositionAPI**とはVue3より標準導入された機能であり、ロジックごとに切り出すことが可能な関数ベースでコンポーネントの実装できる構成
+
+`<style>ブロック`
+CSSを記述する場所
+<style>内で定義した<template>内のHTMLに反映される
