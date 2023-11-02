@@ -1,6 +1,6 @@
 # 導入方法
 ```
-rails new kimochi2 --css tailwind
+rails new app_name --css tailwind
 ```
 これで`rails new`することで初期のGemfileに`gem "tailwindcss-rails"`が追加される（実際はコメントアウトが外れるのかも？？）
 
