@@ -85,3 +85,33 @@ onlyで特定のアクションのみに設定したり、exceptで特定のア�
 ### 詳細設定
 **パスワード文字列数の変更**
 config/initializers/devise.rbファイルを開き`config.password_length = 6..128`の数値部分を変更する
+
+### 会員登録機能実装
+**nameカラムを追加し、新規登録に必要な項目としている場合**
+初期状態のdeviseはサインアップ時に`email, password`しか受け取れない設定になっている
+そのためnameカラム等を登録の際に必要な情報に加えるためのストロングパラメーターの設定を行わなければならない
+deviseのコントローラは直接修正ができないため、全てのコントローラの設定を行えるapplication_controller.rbを修正
+[編集できない理由](https://tomo-bb-aki0117115.hatenablog.com/entry/2020/09/28/235741)
+
+application_controller.rb
+```ruby
+class ApplicationController < ActionController::Base
+  # devise機能（登録やログイン認証等)を使う時は、configure_permitted_parametersメソッドを実行する
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
+  # protectedとすることで他のコントローラーからも下記定義メソッドが他のコントローラでも使用可能になる
+  protected
+
+  # sign_up時にnameカラムのデータ操作を許可する
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit :sign_up, keys: [:name]
+  end
+end
+```
+[公式ドキュメント](https://github.com/heartcombo/devise#strong-parameters)
+なお`email`や`password`はデフォルトで認証されているので`[]`に入れる必要はない
+
+**viewファイルを作成**
+`rails g devise:views`を実行
+deviseの機能と関連付けられたファイルが`app/views/devise`内に生成される
+
