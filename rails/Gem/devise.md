@@ -115,3 +115,31 @@ end
 `rails g devise:views`を実行
 deviseの機能と関連付けられたファイルが`app/views/devise`内に生成される
 
+### ログイン時、ログアウト時の画面遷移先の変更
+application_controller.rbに以下の記述を追加する
+```ruby
+class ApplicationController < ActionController::Base
+
+  private
+
+  # ログイン後のリダイレクト先
+  def after_sign_in_path_for(resource_or_scope)
+    root_path  #ここを好きなパスに変更
+  end
+
+  # ログアウト後のリダイレクト先
+  def after_sign_out_path_for(resource_or_scope)
+    new_user_session_path #ここを好きなパスに変更
+  end
+end
+```
+deviseのソースコードに
+・`after_sign_in_path_for(resource_or_scope)`
+・`after_sign_out_path_for(resource_or_scope)`
+という2つのメソッドが存在し、これをapplication_controller.rbでオーバーライドすることで
+ログイン後、ログアウト後の画面遷移先を変更することができる
+[公式ドキュメント](https://github.com/heartcombo/devise#controller-filters-and-helpers)
+```
+# after_sign_in_path_for と after_sign_out_path_for をオーバーライドしてリダイレクトフックをカスタマイズすることもできます。
+You can also override after_sign_in_path_for and after_sign_out_path_for to customize your redirect hooks.
+```
