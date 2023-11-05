@@ -13,13 +13,14 @@ Validatable: メールとパスワードのバリデーションを提供しま�
 Lockable：サインインに失敗した回数が指定された場合、アカウントをロックします。電子メールまたは指定された期間後にロックを解除できます。
 
 ## 使い方
-Gemfileに記述
+Gemfileに追記
 ```
 gem "devise"
 ```
 ターミナルで`$ rails g devise:install`を実行
 
-通常モデルを作成するときには`$ rails g model名 ~ `を実行するが認証が使えるモデルを作成するときには`$ rails g devise model名`を実行する
+通常、モデルを作成するときには`$ rails g model名 ~ `を実行するが
+認証が使えるモデルを作成するときには`$ rails g devise model名`を実行する
 このコマンドでモデルを作成するとログイン認証するためのファイルが自動で作成され、認証機能が使えるようになる
 仮に`Userモデル`を作成するときには`$ rails g devise user`でを実行すればおk
 これを実行すると`route.rb`に`devise_for :users`自動で追記される
@@ -143,3 +144,22 @@ deviseのソースコードに
 # after_sign_in_path_for と after_sign_out_path_for をオーバーライドしてリダイレクトフックをカスタマイズすることもできます。
 You can also override after_sign_in_path_for and after_sign_out_path_for to customize your redirect hooks.
 ```
+
+### rememberable
+`$ rails g devise:views`で作成されたdevise/sessions/new.rb内をみると以下の記述がある
+```ruby
+<% if devise_mapping.rememberable? %>
+  <div class="field">
+    <%= f.check_box :remember_me %>
+    <%= f.label :remember_me %>
+  </div>
+<% end %>
+```
+表示される画面をみるとチェックボックスとRemember meの記述がされている
+このチェックボックスにチェックを入れてログインすると、次回からログイン情報を入力せずにログイン状態を保持することができる
+`<% if devise_mapping.rememberable? %>`はrememberableモジュールがdeviseの設定に含まれているかを確認しているがその設定とはdeviseで作成したモデルに記述されている
+```ruby
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+```
+この記述を参考に判別を行なっている
