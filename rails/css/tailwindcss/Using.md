@@ -23,3 +23,6 @@ text-xl
 text-2xl ~ text-9xl
 ```
 サイズは使ってみて感じて
+
+### Fluxbox
+[参考サイト](https://tech-machi-log.com/tailwindcss-flexbox/)
