@@ -48,3 +48,11 @@ margin-bottomを6に設定し、下方向のマージンを設定
 `inline` : 改行が入らない（横に並ぶ）
 `inline-block` : 前の行のみ改行が入る（前の行から改行され、続く行は改行されない）
 
+### padding
+`p` : 全方位のpaddingを指定
+`pt` : 上方向のpaddingを指定
+`pb` : 下方向のpaddingを指定
+`pl` : 左方向のpaddingを指定
+`pr` : 右方向のpaddingを指定
+`px` : 水平方向のpaddingを指定
+`py` : 垂直方向のpaddingを指定  
