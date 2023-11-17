@@ -163,3 +163,105 @@ You can also override after_sign_in_path_for and after_sign_out_path_for to cust
          :recoverable, :rememberable, :validatable
 ```
 この記述を参考に判別を行なっている
+
+### deviceのフォームで2つのモデルに同時に値を送る方法
+UserモデルがProfileモデルを持っているという状況
+※前提
+・deviseインストール済
+・deviceでUserモデル、usersテーブル作成済、Profileとアソシエーション設定済
+・profileモデル、profilesテーブル作成済、Userとアソシエーション設定済
+
+`$ rails g devise:controller users`でusers_controller.rbを作成
+Userモデルを以下のようにprofileと関連付ける
+```ruby
+class User < ApplicationRecord
+  has_one :profile #profileとuserの1対1の関連づけ
+  accepts_nested_attributes_for :profile #ここ
+end
+```
+`accepts_nested_attributes_for`によってUserモデルを通してProfileの属性の値をDBに保存することができる
+
+ProfileモデルとUserモデルを関連づける
+```ruby
+class Profile <> ApplicationRecord
+  belong_to :user
+end
+```
+
+registrarion_controller.rbに`newアクション`を追加
+```ruby
+def new
+  @user = User.new
+  @profile = @user.profile_build
+end
+```
+`build_profile`は@userが`has_one :profile`というアソシエーションを持っている場合
+新しいProfileインスタンスを作成し@userとそのプロフィールを関連づける
+この新しいプロフィールはまだデータベース保存されていない
+@userが保存された直後@profileも保存される
+
+ルーティングを編集する
+```ruby
+  devise_for :users, controllers: { registrations: 'users/registrations' }
+```
+deviseにはデフォルトの`registrationsコントローラ`があるが、それを今回のようにカスタムして使用する場合
+`, controllers: { registrations: 'users/registrations' }`を追記しなければならない
+
+ビューファイルの編集をする
+```ruby
+<%= form_with model:@user, url: user_registration_path, method: :post do |f| %>
+  <%= f.fields_for :profile do |f| %>
+    <div class="mb-6">
+      <%= f.label :name, class: "block mb-2 text-sm text-gray-600 dark:text-gray-400" %><br />
+      <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "らんてくん",
+      class: "w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" %>
+    </div>
+  <% end %>
+  ...
+<% end %>
+```
+class名とかは自己都合なので無視でおk
+```ruby
+  <%= f.fields_for :profile do |f| %>
+    <div class="field">
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </div>
+  <% end %>
+```
+のように`f.fields_for :profile do ~ end`を加える
+これで`@profile`を`@user`にネストさせながら同じフォームで値を送信できる
+
+ストロングパラメーターの編集
+先述しているとおりdeviseは直接コントローラを編集できないので`application_controller.rb`を編集する
+```ruby
+class ApplicationController < ActionController::Base
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [profile_attributes: [:name]])
+  end
+end
+```
+`before_action :configure_permitted_parameters, if: :devise_controller?`は、deviseコントローラーでアクションが実行される前に、指定されたメソッド（`configure_permitted_parameters`）を実行する
+
+`devise_parameter_sanitizer.permit(:deviseの処理名, key: [:許可するカラム])`
+`devise_parameter_sanitizer` -> sanitizerメソッドはUserモデルのパラメーター（情報）を取得するメソッド
+`permit(:sign_up, key: [profile_attributes:[:name]])` -> sign_up時にprofileモデルのattributeであるnameデータの操作を許可
+
+ユーザー登録ボタンを押した時の処理を確認すると
+```shell
+11:23:36 web.1  | Started POST "/users" for ::1 at 2023-11-17 11:23:36 +0900
+11:23:36 web.1  | Processing by Users::RegistrationsController#create as HTML
+11:23:36 web.1  |   Parameters: {"authenticity_token"=>"[FILTERED]", "user"=>{"profile_attributes"=>{"name"=>"てすとまん"}, "email"=>"test@example.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"Sign up"}
+11:23:37 web.1  |   TRANSACTION (0.1ms)  BEGIN
+11:23:37 web.1  |   User Exists? (0.4ms)  SELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", "test@example.com"], ["LIMIT", 1]]
+11:23:37 web.1  |   User Create (0.5ms)  INSERT INTO "users" ("email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["email", "test@example.com"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["created_at", "2023-11-17 02:23:37.105905"], ["updated_at", "2023-11-17 02:23:37.105905"]]
+11:23:37 web.1  |   Profile Create (1.2ms)  INSERT INTO "profiles" ("name", "avatar", "role", "description", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["name", "てすとまん"], ["avatar", nil], ["role", 0], ["description", nil], ["user_id", 4], ["created_at", "2023-11-17 02:23:37.107602"], ["updated_at", "2023-11-17 02:23:37.107602"]]
+11:23:37 web.1  |   TRANSACTION (1.0ms)  COMMIT
+11:23:37 web.1  | Redirected to http://localhost:3000/
+11:23:37 web.1  | Completed 303 See Other in 423ms (ActiveRecord: 3.2ms | Allocations: 8694)
+```
+profile_attributesとしてnameを受け取り、userもprofileもcreateが成功している。
