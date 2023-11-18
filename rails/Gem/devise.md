@@ -265,3 +265,5 @@ end
 11:23:37 web.1  | Completed 303 See Other in 423ms (ActiveRecord: 3.2ms | Allocations: 8694)
 ```
 profile_attributesとしてnameを受け取り、userもprofileもcreateが成功している。
+
+[参考サイト](https://qiita.com/HIROKOBA/items/35b636005311b8384278)
