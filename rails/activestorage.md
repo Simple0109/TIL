@@ -183,3 +183,24 @@ edit.html.erbに以下の記述を追加
 ```
 
 ### デフォルト画像の設定
+
+profileモデルにavatarカラムがありそれにactivestorageをアタッチしています profilesテーブルが登録されたと同時、avatarカラムにデフォルトの画像を設定することは可能ですか？
+
+はい、可能だゾ。Profileモデルにコールバックを追加して、レコードが作成されたときにavatarカラムにデフォルトの画像が設定されるようにすることができるナ。例えば、こんな感じで書けるダ。
+```ruby
+class Profile < ApplicationRecord
+  has_one_attached :avatar
+
+  after_initialize :set_default_avatar, if: :new_record?
+
+  private
+  def set_default_avatar
+    avatar.attach(io: File.open(Rails.root.join('path', 'to', 'default_avatar.png')), filename: 'default_avatar.png') unless avatar.attached?
+  end
+end
+```
+after_initializeコールバックは新しいレコードが初期化されたときに呼ばれるから、新しいProfileが作成されたときにset_default_avatarメソッドが実行されて、avatarがまだアタッチされていなければデフォルトの画像をアタッチするダナ。'path', 'to', 'default_avatar.png'はデフォルト画像のファイルパスに置き換えてね。
+
+技術面談後
+そんなんしなくてもユーザー登録の段階で`hidden_field`使ってデフォルト画像登録させちゃうことに
+すっきり〜
