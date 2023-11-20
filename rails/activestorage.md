@@ -204,3 +204,36 @@ after_initializeコールバックは新しいレコードが初期化された�
 技術面談後
 そんなんしなくてもユーザー登録の段階で`hidden_field`使ってデフォルト画像登録させちゃうことに
 すっきり〜
+---
+色々調べた結果`hidden_field`でデフォルト値を設定するのは悪手っぽかったので今回は`before_createコールバック`で新規登録ユーザーのデフォルト値を設定
+※単純なテキストなどは`hidden_field :name, value: "hogehoge"`みたいな感じで設定できそうだったけど今回は画像のため断念
+`before_createコールバック`をProfileモデルに設定することでProfileインスタンスが作成される直前に`before_createコールバック`で設定した処理が走る
+当初ろぼらんてくんから提案された方法は`after_initializeコールバック`だったが`after_initializeコールバック`だと
+Profileインスタンスが初期化されるタイミング全てで指定した処理が走ってしまう。初期化のタイミングは作成されるときのみではなく
+呼び出されるタイミング(find, find_byなど)でも処理が走ってしまうので、あまりふさわしくないと判断した
+
+profile.rbのprivateに以下メソッドを定義
+```ruby
+  def set_default_avatar
+    unless avatar.attached?
+      avatar.attach(
+        io: File.open(Rails.root.join("public", "default_avatar.png")),
+        filename: "default_avatar.png",
+        content_type: "image/png"
+      )
+    end
+  end
+```
+初期値なので設定されていないが一応`unless avatar.attached?`でprofile.avatarにアタッチされていないか確認し、アタッチされていない場合のみ、publicに保存している`default_avatar.png`をprofile.avatarにアタッチする
+※avatarにselfをつけて`self.avatar`にする必要はないのかロボランてんくんに確認したところ
+```
+Railsでは、self キーワードはデフォルトで現在のインスタンスを参照しているから、明示的に self を書かなくてもメソッドや属性にアクセスできるんだ。なので、avatar.attached? のように書いても、Railsはself.avatar.attached?と解釈してくれるよ。ただし、代入の場合は self を使って明示する必要があるけどね。読み取りアクセスの場合は省略して問題ないんだ。
+```
+今回は必要なし、代入する場合は必要
+
+profile.rbにbefore_createコールバックを設定
+```ruby
+class Profile < ApplicationRecord
+  before_create :set_default_avatar
+```
+で完了
