@@ -266,4 +266,4 @@ end
 ```
 profile_attributesとしてnameを受け取り、userもprofileもcreateが成功している。
 
-[参考サイト](https://qiita.com/HIROKOBA/items/35b636005311b8384278)
+[参考サイト](https://qiita.com/wonder_meet/items/9238d9bedea542ab975b)
