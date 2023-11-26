@@ -27,7 +27,8 @@ gem "devise"
 この記述によってサインアップやログインなどの認証のためのルーティングが自動で作成される
 **devise_for**
 deviseのヘルパーメソッド
-`:モデル名`を指定すると認証に必要なルーティングを自動で設定してくれる。この記述の追加と同時にマイグレーションファイルも作成される
+`:モデル名`を指定すると認証に必要なルーティングを自動で設定してくれる。
+この記述の追加と同時にマイグレーションファイルも作成される
 
 ### カラムを追加して、そのカラムを認証機能で使用する場合
 自動で作成されたマイグレーションファイルの内容をみると`name`カラムについての記述がないため、`name`カラム等を追加したい場合、追記してから`$ rails db:migrate`すること
@@ -100,7 +101,7 @@ class ApplicationController < ActionController::Base
   # devise機能（登録やログイン認証等)を使う時は、configure_permitted_parametersメソッドを実行する
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  # protectedとすることで他のコントローラーからも下記定義メソッドが他のコントローラでも使用可能になる
+  # protectedとすることで他のコントローラーからも下記定義メソッドが他のコントローラでも使用不可能になる
   protected
 
   # sign_up時にnameカラムのデータ操作を許可する
