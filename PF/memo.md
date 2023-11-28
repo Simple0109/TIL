@@ -32,3 +32,59 @@ session[:selected_group_id] = @selected_group.id
 userのネストにrequest
 userに全ての情報を持たせてそこから必要な情報を取得してくる
 グループ選択をすることで取得するデータをグループで属性分けして取得しtopページに出力する
+
+### sessionで場合分け
+たぶんだけど
+ユーザー登録時点でdeviseがユーザーごとにsessionを保存している
+ログインしたユーザーのsessionと、登録済みユーザーのsessionを比べてすでにあるsessionかつparamsにgroup_idが含まれていたら
+中間テーブルにURLに含まれているgroup_idとログインしたユーザーのuser_idを保存する的な感じ？かな？
+それ用のログインフォームを作るのか、通常のログインフォームに
+```ruby
+# たぶん書き方全然違うけど認識だけ
+invite_user_session = [:session]
+if invite_user_session == User.find_by([session: current_user[:session]])
+```
+的なこと
+でもsessionってログアウトの段階で削除されるんじゃない？
+データベース保存もできるらしい
+11/28技術面談
+流れ
+・準備
+groupにtokenカラムを作成
+招待リンクを作成したタイミングでtokenカラムにトークンを生成、リンクにトークンを付与
+・招待URLを送付し、リンクにアクセス後
+付与されたトークンと、groupのtokenカラムを比較し、groupを特定
+group_idをsessionに保存(invite_user_session = @group.idとか?)
+ユーザーの状態によって（ログイン済み、未ログイン、非登録ユーザー）中間テーブルにgroup_idとuser_idが保存される処理を書く
+処理完了後にinvite_session, groupのtokenカラムを削除する
+
+```ruby
+class InvitesController < ApplicationController
+
+def new
+  @group = Group.find(params[:group_id])
+  @group.token = generate_invite_token
+  @invite_link = user_session_url(invite_token: @group_token)
+end
+
+def create
+  @group = Group.find_by(token: params[:invite_token])
+  invite[:session] = @group.id
+  if user_signed?
+    @group.users << current_user
+    invite[:session].clear
+    @group.token = nil
+  else
+  end
+end
+
+private
+  def generate_invite_token
+    SecureRandom.urlsafe_base64(20)
+  end
+```
+
+### リクエスト承認機能
+当初はグループユーザー全員のが承認（どっかのカラムが１になるみたいな）したら承認→実行可能。っていう流れにしようと思ってたけど、リクエスト作成後にグループメンバーに変更がある可能性がある
+`group.users.count == どっかのカラムの合計値`みたいにしようと思ってたから後でエラーが起きる可能性がある
+リクエスト作成段階で、グループメンバーのうちだれをメンバーにするかを選択してその選択したメンバーの同意が得られれば実行可能って流れになるかな？11月28日現在の案
