@@ -88,3 +88,15 @@ private
 当初はグループユーザー全員のが承認（どっかのカラムが１になるみたいな）したら承認→実行可能。っていう流れにしようと思ってたけど、リクエスト作成後にグループメンバーに変更がある可能性がある
 `group.users.count == どっかのカラムの合計値`みたいにしようと思ってたから後でエラーが起きる可能性がある
 リクエスト作成段階で、グループメンバーのうちだれをメンバーにするかを選択してその選択したメンバーの同意が得られれば実行可能って流れになるかな？11月28日現在の案
+
+### 承認機能修正
+・申請取り消し時にrequest_usersのapproval_statusも0(unauthorized)に変更するように
+
+・承認、承認取り消しボタンの表示部分について今は
+`<% if @request.authorizers_check(current_user) && @subject_authorizer.unauthorized? %>`
+みたいになっているがこれに追加で
+`admit`には`@request.unauthorized?`
+`cancel_admit`には`@request.authorized?`
+みたいな記述を追加
+
+・全員に承認されて実行可能になった場合のフラッシュの表示方法を考える
