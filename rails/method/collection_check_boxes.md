@@ -64,3 +64,5 @@ has_many :approvals, through: :request_approvals, source: :user
 procは**ブロックをオブジェクトにしたもの**
 `@group_members`と`:id`をブロック化して`|user|`で`user`という変数に格納している
 そして`user`の`.profile.name`を1つずつ`a`に入れている
+
+[実装参考記事](https://pote-chil.com/blog/rails-collection-check-boxes)
