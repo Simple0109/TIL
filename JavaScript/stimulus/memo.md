@@ -1,0 +1,7 @@
+### stimulusの動作原理
+
+Stimulusフレームワークでは、特定のHTML要素に関連づけられたControllerクラスがページに存在する場合、その要素がページに読み込まれると自動的にconnectメソッドが呼び出されます。これはStimulusのライフサイクルの一部であり、Controllerオブジェクトが初めてページ上の対応するHTML要素に接続されたときに発生します。
+
+HTML要素との結びつき: StimulusはHTML要素にdata-controller属性を使用して特定のControllerクラスを関連付けます。例えば、ある要素がdata-controller="hoge"という属性を持っている場合、Stimulusはこの要素にHogeController（もしくは類似の名前）を関連付けます。
+
+メソッドの呼び出し: ページが読み込まれ、対象のHTML要素がDOM（Document Object Model）に挿入されると、Stimulusは自動的に関連付けられたControllerクラスのインスタンスを作成し、メソッドが記述されている場合、そのメソッドを呼び出します。これにより、Controllerに対して初期化やイベントリスナーの設定などが行われます。
