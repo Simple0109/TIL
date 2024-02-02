@@ -268,3 +268,37 @@ end
 profile_attributesとしてnameを受け取り、userもprofileもcreateが成功している。
 
 [参考サイト](https://qiita.com/wonder_meet/items/9238d9bedea542ab975b)
+
+### trackable
+deviseで作成したモデルのモジュールに`trackable`を追加し、作成したテーブルカラムに
+```ruby
+:sign_in_count
+:current_sign_in_at
+:last_sign_in_at
+:current_sign_in_ip
+:last_sign_in_ip
+```
+が存在する時、使用することが可能になる。
+今回利用する予定がなく、カラムに追加していなかったので以下のマイグレーションファイルを作成してカラムを追加した
+コンソールで`$ rails g migration AddTrackableToUsers`を実行。生成されたマイグレーションファイルを以下のように修正
+```ruby
+class AddTrackableToUsers < ActiveRecord::Migration[7.0]
+  def change
+    change_table :users do |t|
+      t.integer :sign_in_count, default: 0, null: false
+      t.datetime :current_sign_in_at
+      t.datetime :last_sign_in_at
+      t.string :current_sign_in_ip
+      t.string :last_sign_in_ip
+    end
+  end
+end
+```
+それぞれのカラムの説明
+```ruby
+:sign_in_count #ユーザーごとのログインした回数。ユーザーがログインするたびにカウントが１増える
+:current_sign_in_at #ユーザーが最後にログインした日時
+:last_sign_in_at #ユーザーが最後から二番目にログインした日時。ユーザーが新たにログインすると、current_sign_in_atの値が入る
+:current_sign_in_ip #ユーザーが最後にログインしたIPアドレス
+:last_sign_in_ip #ユーザーが最後から二番目にログインしたIPアドレス
+```
