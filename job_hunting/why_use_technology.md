@@ -18,7 +18,7 @@ tailwindcssはレスポンシブデザインの実装や、カスタマイズす
 またインターネット上に多くの技術記事があり、実装の際も情報を集めやすいと考え採用しました
 
 ### stimulus
-stimulusは
+stimulus
 javascriptのフレームワークにstimulus
 
 ### devise
