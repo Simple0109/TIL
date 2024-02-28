@@ -33,3 +33,12 @@ stimulusはRailsと相性のいいフレームワークであり、学習コス�
 ### image_processing
 画像処理に関してはそこまで複雑な処理は行っていないため、より容易にActiveStorageと組み合わせて画像処理機能を実装するために採用しました
 
+### delayed_job
+グループの招待リンクを作成後、そのリンクが使用されなかった場合、削除するための
+バックグラウンド処理を実装するため、delayed_jobを採用しています
+
+### rubocop
+
+### actioncable
+
+### git(github)
