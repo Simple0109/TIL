@@ -1,4 +1,3 @@
-n = ARGV[0].to_i
 def fib_sum(n)
   a = 0
   b = 1
@@ -13,4 +12,5 @@ def fib_sum(n)
   puts sum
 end
 
+n = ARGV[0].to_i
 fib_sum(n)
