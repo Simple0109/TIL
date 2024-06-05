@@ -1,22 +1,24 @@
 function main(){
-    fetchUserInfo("js-primer-example");
+    fetchUserInfo("js-primer-example")
+        .catch((error) => {
+            console.error(`エラーが発生しました (${error})`);
+        });
 }
 
 function fetchUserInfo(userId){
-    fetch(`https://api.github.com/users/${encodeURIComponent(userId)}`)
+    return fetch(`https://api.github.com/users/${encodeURIComponent(userId)}`)
         .then(response => {
             if(!response.ok){
-                console.error("エラーレスポンス", response);
+                return Promise.reject(new Error(`${response.status}: ${response.statusText}`));
             }else{
-                return response.json()
-                .then(userInfo => {
+                return response.json().then(userInfo => {
                     const view = createView(userInfo)
-
                     displayView(view)
                 });
             }
-        }).catch(error => {
-            console.error(error)
+        })
+        .catch(err => {
+            return Promise.reject(new Error(`Failed fetch user(id: ${userId} info)`, {cause: err}));
         });
     
 }
