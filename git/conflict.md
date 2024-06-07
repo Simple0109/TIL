@@ -149,11 +149,3 @@ no changes added to commit (use “git add” and/or “git commit -a”)
 </html>
 ```
 あとはいつも通りコミットする！
-
-**解消方法**
-まずdevelopブランチに移動し`git pull`を実行（developブランチの最新にするため？）　　
-次にaブランチに移動して、developブランチに`git merge`する（
-## コンフリクトの解消方法
-1. `git rebase`
-
-2. `git merge`
