@@ -87,3 +87,29 @@ print(s.subString(2)); // うえお
 print(s.subString(2, 4)); // うえ
 // endに不正な値（負の値、1番目の引数より小さな値、文字列の長さよりも大きな値）を指定すると実行時エラーとなる。
 ```
+
+## 文字列の分割
+```dart
+final s0 = "";
+final s1 = "Hello Dart World";
+final s2 = "あいいう";
+
+print(s1.split(" ")); // ["Hello", "Dart", "World"]
+print(s2.split("い")); // ["あ", "", "う"]
+// 空文字を渡すと全ての文字で分割できる
+print(s2.split("")); // ["あ", "い", "い", "う"]
+```
+
+## 文字列の置き換え
+```dart
+final s = "うえうえしたした";
+
+
+print(s.replaceFirst("した", "ひだり")); // うえうえひだりした
+
+// 第三引数にstartindexを渡すとそのインデックス以降に見つかった最初の文字列を置き換えする
+print(s.replaceFirst("した", "ひだり", 5)); // うえうえしたひだり
+
+// 一致したすべての文字列を置き換え
+print(s.replaceAll("した", "ひだり")); // うえうえひだりひだり
+```
