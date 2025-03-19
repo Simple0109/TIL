@@ -75,3 +75,49 @@ elsif country == "japan" then "こんにちは"
 elsif country == "italy" then "Ciao"
 end
 ```
+
+## &&や||の戻り値と評価を終了するタイミング
+```ruby
+1 && 2 && 3 #=> 3
+1 && nil && 3 #=> nil
+1 && false && 3 #=> false
+
+nil || false #=> false
+false || nil #=> nil
+nill || false || 2 || 3 #=> 2
+```
+Rubyでは式全体が真または偽であることが決定するまで左から順番に式を評価する。
+式全体の真または偽が確定すると、式の評価を終了して、最後に評価した式の値を返す。
+
+## unless文
+if文と反対の意味をもつのが`unless`文
+条件式が偽の場合のみ処理を実行する。if文で否定の条件を書いているとき、`unless`文に書き換えられる
+```ruby
+status = "error"
+if status != "ok"
+  "なにか異常があります"
+end
+#=> なにか異常があります
+
+# 上記コーデゃunlessで書き換えられる
+status = "error"
+unless status == "ok"
+  "なにか異常があります"
+end
+#=> なにか異常があります
+```
+elseを使って条件が偽でなかった場合（真だった場合）の処理を書くこともできる
+```ruby
+status = "error"
+unless status == "ok"
+  "なにか異常があります"
+else
+  "正常です"
+end
+```
+※ただし`elsif`に相当するものはunlessにはない
+if文と同じく後置することもできる
+```ruby
+status = "error"
+"なにか異常があります" unless status == "ok"
+```
