@@ -81,8 +81,24 @@
 # (1..4).each { |n| sum += n }
 # pp sum
 
-numbers = []
-(1..10).step(2).each { |n| numbers << n }
-pp numbers
+# numbers = []
+# (1..10).step(2).each { |n| numbers << n }
+# pp numbers
 
+# jp = ["japan", "日本"]
+# country = "japan"
+# case country
+# when *jp
+#   "こんにちは"
+# end
 
+# def greet(*names)
+#   "#{names.join("と")}、こんにちは"
+# end
+#
+# pp greet("石川", "砂糖", "高橋")
+
+def foo(a, *b, c, d)
+  "a=#{a}, b=#{b}, c=#{c}, d=#{d}"
+end
+pp foo(1,2,3,4,5,6,7)
