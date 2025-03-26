@@ -241,5 +241,66 @@
 # c = a | b
 # c.each { |i| print i, " " }
 
-a = [1,2,3,4]
-a[0, 3].each do |i| print i, " " end
+# a = [1,2,3,4]
+# a[0, 3].each do |i| print i, " " end
+
+# a = [1,2,3]
+# b = [4,7]
+# c = [8,9,10,11,12]
+# p a.zip(b, c)
+
+# a=[1,2,3,4,5]
+# p a.slice(0)
+# p a.slice(0, 2)
+# p a.slice(0..3)
+# p a.slice(0, 10)
+# p a.slice(10, 1)
+
+# s = <<"EOB"
+# Hello,
+# Ruby,
+# World.
+# EOB
+# "EOB"
+# puts s
+
+# doq = <<EOS
+# 最近
+#
+# 四季の移り変わりが
+# 曖昧で
+#
+# 風邪ひきやすいですよね
+# EOS
+# puts doq
+
+# s1 = "Hoge"
+# s2 = "Fuga"
+# s1.concat(s2)
+# s1.chop
+# s1.chomp
+# s1 + s2
+# puts s1
+
+# member = ["Ishikawa", 10]
+# print "ID:%2d, Name:%s" % member
+
+# h = {"a": 0, "b": 1, "c": 2, "d": 3,}
+# p h.invert
+
+#h = {"a": 0, "b": 1, "c": 2, "d": 3}
+# h = {"a" => 0, "b" => 1, "c" => 2}
+# p h.has_key?("a")
+
+# ファイルデータの内容
+# abcdefg
+
+# File.open("data") do |io|
+#   while not io.eof?
+#     print io.read(1)
+#     io.seek(0, IO::SEEK_SET)
+#   end
+# end
+
+t = Time.gm(1970, 1, 1)
+puts t.strftime(" %Y/%m/%d" )
