@@ -302,5 +302,32 @@
 #   end
 # end
 
-t = Time.gm(1970, 1, 1)
-puts t.strftime(" %Y/%m/%d" )
+# t = Time.gm(1970, 1, 1)
+# puts t.strftime(" %Y/%m/%d" )
+
+# y = true
+# y && (raise "failed")
+# puts("succeeded!")
+
+# str = "ruby ruby ruby"
+# puts str.sub(/ruby/, "java")
+
+# class Parent
+#   attr_reader :name
+#   def initialize(name)
+#     @name = name
+#   end
+# end
+#
+# class Child < Parent
+#   def initialize(name)
+#     @name = "Child"+name
+#   end
+# end
+#
+# s = Child.new("石川")
+# puts s.name
+
+# a = [1,2,3,4]
+# b = [1,3,5,7]
+# p a || b

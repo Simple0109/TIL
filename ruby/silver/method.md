@@ -160,3 +160,74 @@ irb(main):052> Time.gm(1999,1,1)
 => 1999-01-01 00:00:00 UTC
 ```
 
+### sub
+`文字列.sub(/正規表現/, "変換後の文字")`
+というふうに使用する。
+```ruby
+irb(main):003> str = "ruby ruby ruby"
+=> "ruby ruby ruby"
+irb(main):004> str.sub(/ruby/, "java")
+=> "java ruby ruby"
+```
+上記のようにマッチした最初の要素が変更される（非破壊）
+破壊的メソッドの`sub!`メソッドもある
+
+### gsub
+`gsub`メソッドは`sub`メソッドのようにマッチした最初の要素のみではなく、正規表現にマッチした部分をすべて変換する
+```ruby
+irb(main):007> str = "ruby ruby ruby"
+=> "ruby ruby ruby"
+irb(main):008> str.gsub(/ruby/, "java")
+=> "java java java"
+```
+これも破壊的メソッドの`gsub!`メソッドが存在する
+
+### to_iメソッド
+文字列を整数に変換する
+1. 文字列の先頭から順番に数字を読み取る
+2. 数字ではない文字に遭遇した時点で変換を終了する
+3. 先頭が数字ではない場合`0`を返す
+```ruby
+irb(main):010> "123ab".to_i
+=> 123
+irb(main):011> "ab123".to_i
+=> 0
+irb(main):012> nil.to_i
+=> 0
+irb(main):013> Integer("123")
+=> 123
+irb(main):014> Integer("123ab")
+(irb):14:in `Integer': invalid value for Integer(): "123ab" (ArgumentError)
+```
+
+### splitメソッド
+文字列を任意の条件で分割し、配列に格納する
+`"文字列".split(区切り文字, 分割数)`
+```ruby
+# 指定した文字列で分割
+irb(main):029> "apple,banana,orange".split(",")
+=> ["apple", "banana", "orange"]
+```
+
+区切り文字に正規表現を使うこともできる
+```ruby
+# 正規表現を使う場合//で囲む
+irb(main):030> "apple,banana,orange".split(/,/)
+=> ["apple", "banana", "orange"]
+
+# 複数条件で区切りたいときは|を使う
+irb(main):032> "apple,banana;orange+cherry".split(/,|;|\+/)
+=> ["apple", "banana", "orange", "cherry"]
+```
+
+区切り文字に`" "（空白文字）`を指定すると「文字列の先頭と末尾の空白文字」を除き、なおかつ空白文字で分割してくれる
+```ruby
+irb(main):034> "       apple banana  orange cherry   ".split(" ")
+=> ["apple", "banana", "orange", "cherry"]
+# nilを入れても同じ結果が得られる
+irb(main):035> "       apple banana  orange cherry   ".split(nil)
+=> ["apple", "banana", "orange", "cherry"]
+# なにも指定しなくても同じ結果が得られる
+irb(main):036> "       apple banana  orange cherry   ".split
+=> ["apple", "banana", "orange", "cherry"]
+```

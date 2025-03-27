@@ -530,3 +530,58 @@ IBM, マイクロソフト, Apple, ネットスケープ
 ```
 これに対して`明日は[晴曇雪]です`の場合合致するのは例1,2,4になる
 ※`[]の中でメタ文字は普通の文字として認識される`
+
+### 短絡評価
+**論理演算子の特徴**
+・左側から順番に評価される
+・式の真偽が決定すると残りの式は評価しない
+・最後に評価された式の値が論理式全体の値になる
+・`false`と`nil`以外は真
+
+`条件1 || 条件2`
+この場合、条件1、条件2の順番に審議を判定する
+`||`の場合、どちらかの条件の結果が真であれば結果は真になる
+なので条件1が真の場合、条件2の結果を見なくても真になる
+
+`条件1 && 条件2`
+条件2は`||`とは逆に条件1の結果が真の場合のみ、評価される。
+
+### 破壊的メソッドと定数
+定数に対して破壊的メソッドを使っても警告は表示されない
+```ruby
+irb(main):009> STR = "hoge"
+=> "hoge"
+irb(main):010> STR.gsub!("hoge", "piyo")
+=> "piyo"
+irb(main):011> STR
+=> "piyo"
+```
+定数に対して再代入を行うとオブジェクトIDが変わる
+```ruby
+irb(main):001> S = "hoge"
+=> "hoge"
+irb(main):002> S.object_id
+=> 34560
+irb(main):003> S = "piyo"
+(irb):3: warning: already initialized constant S
+(irb):1: warning: previous definition of S was here
+=> "piyo"
+irb(main):004> S.object
+=> 49420
+```
+
+しかし破壊的メソッドの場合`STR`定数のオブジェクト自体は変更されていないため、警告が起きない
+```ruby
+irb(main):009> STR = "hoge"
+=> "hoge"
+irb(main):010> STR.gsub!("hoge", "piyo")
+=> "piyo"
+irb(main):011> STR
+=> "piyo"
+irb(main):012> STR.object_id
+=> 261520
+irb(main):013> STR.sub("piyo", "java")
+=> "java"
+irb(main):014> STR.object_id
+=> 261520
+```
