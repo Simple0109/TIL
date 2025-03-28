@@ -585,3 +585,22 @@ irb(main):013> STR.sub("piyo", "java")
 irb(main):014> STR.object_id
 => 261520
 ```
+
+### 文字コード
+`String#encoding`メソッドはその文字列の文字コードを表すEncodingオブジェクトを返します。
+Ruby2.0以降では、明示的に文字コードの指定がなければデフォルトのスクリプトエンコーディングはUTF-8とみなす。
+
+### 正規表現
+`^`:行の先頭
+`[0-9]`:0から9までの数字1文字
+`.`:任意の1文字
+`$`:行の末尾
+
+### Hashに対するsortメソッド
+Rubyでハッシュに対して`sort`メソッドを使うと、ハッシュは自動的に「キーと値のペアの配列(`[キー, 値]`)」に変換される
+```ruby
+irb(main):039> a = {"Foo" => "Hoge", "Bar"=>"Piyo", "Baz"=>"Fuga"}
+=> {"Foo"=>"Hoge", "Bar"=>"Piyo", "Baz"=>"Fuga"}
+irb(main):040> a.sort
+=> [["Bar", "Piyo"], ["Baz", "Fuga"], ["Foo", "Hoge"]]
+```
