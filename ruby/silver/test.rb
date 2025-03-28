@@ -331,3 +331,19 @@
 # a = [1,2,3,4]
 # b = [1,3,5,7]
 # p a || b
+
+# a=[0,1,2,3,4,5]
+# a.delete_if{ |x| x % 2 == 0}
+# p a
+
+# a = [:a, :a, :b, :c]
+# a[]
+
+# a = {"Foo"=>"Hoge", "Bar"=>"Piyo", "Baz"=>"Fuga"}
+# b = {"Foo"=>"hoge", "Bar"=>"piyo", "Baz"=>"fuga"}
+#
+# p a.update(b).sort{|a,b| a[1] <=> b[1]}
+
+t = Time.local(2000,1,1)
+print(t.strftime("%Y/%m/%d"))
+
