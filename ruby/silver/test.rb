@@ -344,6 +344,7 @@
 #
 # p a.update(b).sort{|a,b| a[1] <=> b[1]}
 
-t = Time.local(2000,1,1)
-print(t.strftime("%Y/%m/%d"))
+# t = Time.local(2000,1,1)
+# print(t.strftime("%Y/%m/%d"))
+
 
