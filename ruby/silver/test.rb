@@ -348,3 +348,15 @@
 # print(t.strftime("%Y/%m/%d"))
 
 
+def age_message(age)
+  case
+  when age < 18
+    puts "あなたは未成年です"
+  when age < 20
+    puts "あなたは成人ですがお酒は20歳からです"
+  else
+    puts "あなたは成人です"
+  end
+end
+
+age_message(23)
