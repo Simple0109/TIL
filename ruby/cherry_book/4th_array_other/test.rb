@@ -98,7 +98,12 @@
 #
 # pp greet("石川", "砂糖", "高橋")
 
-def foo(a, *b, c, d)
-  "a=#{a}, b=#{b}, c=#{c}, d=#{d}"
-end
-pp foo(1,2,3,4,5,6,7)
+# def foo(a, *b, c, d)
+#   "a=#{a}, b=#{b}, c=#{c}, d=#{d}"
+# end
+# pp foo(1,2,3,4,5,6,7)
+
+number = [10, 20, 30, 40, 50]
+# 3番目以降の要素を取得
+pp number[2..]
+pp number[..1]
