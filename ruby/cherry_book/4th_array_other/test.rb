@@ -103,7 +103,50 @@
 # end
 # pp foo(1,2,3,4,5,6,7)
 
-number = [10, 20, 30, 40, 50]
-# 3番目以降の要素を取得
-pp number[2..]
-pp number[..1]
+# number = [10, 20, 30, 40, 50]
+# # 3番目以降の要素を取得
+# pp number[2..]
+# pp number[..1]
+
+# sum = 0
+# # 処理を5回繰り返す
+# 5.times { |n| sum += n }
+# pp sum
+
+# fruits = ["apple", "melon", "orange"]
+# numbers = [1,2,3]
+# catch :done do
+#   fruits.each do |f|
+#     numbers.each do |n|
+#       puts "#{f}, #{n}"
+#       if f == "orange" && n == 3
+#         throw :done
+#       end
+#     end
+#   end
+# end
+
+# ret =
+#   catch :done do
+#     throw :done, 123
+#   end
+# pp ret
+
+# numbers = [1,2,3,4,5]
+# numbers.each do |n|
+#   next if n.even?
+#   puts n
+# end
+
+foods = ["ピーマン", "トマト", "セロリ"]
+count = 0
+foods.each do |food|
+  print "#{food}は好きですか？ => "
+  answer = "いいえ"
+  puts answer
+
+  count += 1
+  redo if answer != "はい" && count < 2
+
+  count = 0
+end
